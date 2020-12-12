@@ -20,7 +20,7 @@
 		"@types/node": "^14.14.12",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
-		"hitoka": "^0.5.1",
+		"hitoka": "^0.5.2",
 		"jest": "^26.6.3",
 		"ts-jest": "^26.4.4",
 		"tsconfig-paths": "^3.9.0",
