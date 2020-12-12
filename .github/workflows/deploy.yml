@@ -1,16 +1,28 @@
-name: deploy website
+name: deploy
 on:
-  pull_request:
+  pull_request_target:
+  push:
     branches:
       - main
 jobs:
-  deploy:
+  deploy-to-vercel:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: amondnet/vercel-action@v20
+        id: preview
+        if: github.event_name == 'pull_request'
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID}}
-          vercel-project-id: ${{ secrets.PROJECT_ID}}
+          *common_params
+      - uses: amondnet/vercel-action@v20
+        id: production
+        if: github.event_name == 'push'
+        with:
+          *common_params
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+common_params: &common_params
+  vercel-args: '--prod'
+  vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  vercel-org-id: ${{ secrets.ORG_ID}}
+  vercel-project-id: ${{ secrets.PROJECT_ID}}
