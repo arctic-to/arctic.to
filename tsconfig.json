@@ -5,9 +5,7 @@
     "baseUrl": ".",
     "outDir": "build",
     "paths": {
-      "@/*": [
-        "*"
-      ]
+      "@/*": ["*"]
     },
     "allowJs": true,
     "noEmit": true,
@@ -16,10 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "files": ["next-env.d.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
