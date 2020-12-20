@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "lib": ["DOM"]
   },
   "files": ["next-env.d.ts"],
   "include": ["src/**/*"],
