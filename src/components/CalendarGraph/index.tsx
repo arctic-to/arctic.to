@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useMemo } from 'react'
 
 import { Tooltip } from '../Tooltip'
 import styles from './index.module.scss'
@@ -27,7 +27,7 @@ interface CalendarGraphProps {
 
 export function CalendarGraph({ data, color }: CalendarGraphProps) {
   const [hoveredCellData, setHoveredCellData] = useState<Datum | null>(null)
-  const [tooltipTrigger, setTooltipTrigger] = useState<
+  const [tooltipReference, setTooltipReference] = useState<
     HTMLElement | SVGElement | null
   >(null)
 
@@ -38,13 +38,13 @@ export function CalendarGraph({ data, color }: CalendarGraphProps) {
     (d: Datum) => (e: React.MouseEvent<SVGRectElement>) => {
       if (!(e.target instanceof SVGRectElement)) return
       setHoveredCellData(d)
-      setTooltipTrigger(e.target)
+      setTooltipReference(e.target)
     },
     [],
   )
   const handleMouseOut = useCallback(() => {
     setHoveredCellData(null)
-    setTooltipTrigger(null)
+    setTooltipReference(null)
   }, [])
 
   return (
@@ -58,7 +58,12 @@ export function CalendarGraph({ data, color }: CalendarGraphProps) {
           {/* Day of Week Axis */}
           <g textAnchor="end">
             {d3.range(7).map((i) => (
-              <text x={-AXIS_GAP} y={CELL_OFFSET * (i + 0.5)} dy="0.25em">
+              <text
+                key={i}
+                x={-AXIS_GAP}
+                y={CELL_OFFSET * (i + 0.5)}
+                dy="0.25em"
+              >
                 {['Sun', '', '', 'Wed', '', '', 'Sat'][i]}
               </text>
             ))}
@@ -73,6 +78,7 @@ export function CalendarGraph({ data, color }: CalendarGraphProps) {
               )
               .map((month) => (
                 <text
+                  key={Number(month)}
                   x={
                     d3.timeSunday.count(d3.timeYear(month), month) * CELL_OFFSET
                   }
@@ -87,6 +93,7 @@ export function CalendarGraph({ data, color }: CalendarGraphProps) {
           <g>
             {data.map((datum) => (
               <rect
+                key={Number(datum.date)}
                 fill={calcColor(datum.data / maxValue)}
                 x={
                   d3.timeSunday.count(d3.timeYear(datum.date), datum.date) *
@@ -104,8 +111,8 @@ export function CalendarGraph({ data, color }: CalendarGraphProps) {
           </g>
         </g>
       </svg>
-      {tooltipTrigger && (
-        <Tooltip trigger={tooltipTrigger} margin={10}>
+      {tooltipReference && (
+        <Tooltip reference={tooltipReference} margin={10}>
           <div>{hoveredCellData?.data} activities</div>
           <div>on {hoveredCellData?.date.toLocaleDateString()}</div>
         </Tooltip>

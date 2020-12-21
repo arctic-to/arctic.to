@@ -1,20 +1,29 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 
 interface TooltipProps {
   children: React.ReactNode
-  trigger: HTMLElement | SVGElement
+  reference: HTMLElement | SVGElement
   margin: number
 }
 
-const WIDTH = 120
+export function Tooltip({ children, reference, margin }: TooltipProps) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [width, setWidth] = useState(0)
 
-export function Tooltip({ children, trigger, margin }: TooltipProps) {
-  const rect = trigger.getBoundingClientRect()
-  const bottom = window.innerHeight - rect.y + margin
-  const left = rect.x - WIDTH / 2 + rect.width / 2
+  const referenceRect = reference.getBoundingClientRect()
+  const bottom = window.innerHeight - referenceRect.y + margin
+  const left = referenceRect.x - width / 2 + referenceRect.width / 2
+
+  useLayoutEffect(() => {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect()
+      setWidth(rect.width)
+    }
+  }, [])
 
   return (
-    <div className={styles.tooltip} style={{ bottom, left, width: WIDTH }}>
+    <div className={styles.tooltip} style={{ bottom, left }} ref={ref}>
       {children}
     </div>
   )
