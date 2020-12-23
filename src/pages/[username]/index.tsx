@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 
 import { CalendarGraph } from '@/components'
+import { color } from '@/config'
 
 import styles from './index.module.scss'
 
@@ -15,13 +16,7 @@ export default function Profile() {
     <div className={styles.profile}>
       <div className={styles.calendar}>
         网易云音乐
-        <CalendarGraph data={makeData()} color="#FF4343" />
-        知乎
-        <CalendarGraph data={makeData()} color="#43B0FF" />
-        AniList
-        <CalendarGraph data={makeData()} color="#f68a0a" />
-        GitHub
-        <CalendarGraph data={makeData()} color="#80BD8B" />
+        <CalendarGraph data={makeData()} color={color.NETEASE_MUSIC} />
       </div>
     </div>
   )
