@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-import { CalendarGraph } from '@/src/components'
+import { CalendarGraph } from '@/components'
 
 import styles from './index.module.scss'
 
